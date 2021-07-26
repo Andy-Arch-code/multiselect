@@ -17,12 +17,10 @@ namespace multiselect
         public static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();
-
-            //CreateDbIfNotExists(host);
-
             host.Run();
         }
 
+        //Obsolete. I used this to test before migrations. Now there is a migration, seeded with values.
         private static void CreateDbIfNotExists(IHost host)
         {
             using (var scope = host.Services.CreateScope())
