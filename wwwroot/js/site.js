@@ -3,4 +3,4 @@
 
 // Write your JavaScript code.
 
-document.multiselect('#testSelect1');s
+document.multiselect('#testSelect1');
