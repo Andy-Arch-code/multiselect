@@ -28,16 +28,30 @@ namespace multiselect.Controllers
 
         public JsonResult Select(int id)
         {
-            bool success = new SelectionOperations().Select(id, _db);
+            new SelectionOperations().Select(id, _db);
             
-            return Json(new { Success = success});
+            return Json(new { Success = "Success" });
         }
 
         public JsonResult Deselect(int id)
         {
-            bool success = new SelectionOperations().Deselect(id, _db);
+            new SelectionOperations().Deselect(id, _db);
 
-            return Json(new { Success = success });
+            return Json(new { Success = "Success" });
+        }
+
+        public JsonResult SelectAll()
+        {
+            new SelectionOperations().SelectAll(_db);
+
+            return Json(new { Success = "Success" });
+        }
+
+        public JsonResult DeselectAll()
+        {
+            new SelectionOperations().DeselectAll(_db);
+
+            return Json(new { Success = "Success" });
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

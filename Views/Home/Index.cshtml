@@ -1,15 +1,99 @@
-﻿@{
+﻿@model List<multiselect.Models.UserModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
-
     <select id='testSelect1' multiple>
-        <option value='1'>Item 1</option>
-        <option value='2' selected>Item 2</option>
-        <option value='3' selected>Item 3</option>
-        <option value='4'>Item 4</option>
-        <option value='5'>Item 5</option>
+        @foreach (var user in Model)
+        {
+            @if (user.Selected)
+            {
+                <option value='@user.ID' selected>@user.FullName</option>
+            }
+            else
+            {
+                <option value='@user.ID'>@user.FullName</option>
+            }
+        }
     </select>
-
 </div>
+
+<script>
+    @foreach (var user in Model)
+    {
+        <text>
+    document.multiselect('#testSelect1').setCheckBoxClick(@user.ID, function (target, args) {
+        if (args.checked == true) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/Select/@user.ID",
+                data: {},
+                success: function (response) {
+                    console.log(response.success);
+                },
+                failure: function (response) {
+                    alert("Failure, restart page");
+                },
+                error: function (response) {
+                    alert("Error, restart page");
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Home/Deselect/@user.ID",
+                data: {},
+                success: function (response) {
+                    console.log(response.success);
+                },
+                failure: function (response) {
+                    alert("Failure, restart page");
+                },
+                error: function (response) {
+                    alert("Error, restart page");
+                }
+            });
+        }
+    });
+        </text>
+    }
+
+    document.multiselect('#testSelect1').setCheckBoxClick("checkboxAll", function (target, args) {
+        if (args.checked == true) {
+            $.ajax({
+                type: "POST",
+                url: "/Home/SelectAll",
+                data: {},
+                success: function (response) {
+                    console.log(response.success);
+                },
+                failure: function (response) {
+                    alert("Failure, restart page");
+                },
+                error: function (response) {
+                    alert("Error, restart page");
+                }
+            });
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/Home/DeselectAll",
+                data: {},
+                success: function (response) {
+                    console.log(response.success);
+                },
+                failure: function (response) {
+                    alert("Failure, restart page");
+                },
+                error: function (response) {
+                    alert("Error, restart page");
+                }
+            });
+        }
+    });
+
+</script>

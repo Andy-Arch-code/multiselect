@@ -9,7 +9,7 @@ namespace multiselect.Data
 {
     public class SelectionOperations
     {
-        public bool Select(int Id, MultiselectContext multiselectContext)
+        public void Select(int Id, MultiselectContext multiselectContext)
         {
             try
             {
@@ -18,15 +18,6 @@ namespace multiselect.Data
                     multiselectContext.Users.FirstOrDefault(x => x.ID == Id).Selected = true;
                     multiselectContext.Users.FirstOrDefault(x => x.ID == Id).SelectedDate = DateTime.Now;
                     multiselectContext.SaveChanges();
-
-                    if (multiselectContext.Users.FirstOrDefault(x => x.ID == Id).Selected == true)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
                 }
             }
             catch (Exception e)
@@ -35,7 +26,7 @@ namespace multiselect.Data
             }
         }
 
-        public bool Deselect(int Id, MultiselectContext multiselectContext)
+        public void Deselect(int Id, MultiselectContext multiselectContext)
         {
             try
             {
@@ -43,15 +34,45 @@ namespace multiselect.Data
                 {
                     multiselectContext.Users.First(x => x.ID == Id).Selected = false;
                     multiselectContext.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Couldn't connect to database", e);
+            }
+        }
 
-                    if (multiselectContext.Users.FirstOrDefault(x => x.ID == Id).Selected == false)
+        public void SelectAll(MultiselectContext multiselectContext)
+        {
+            try
+            {
+                using (multiselectContext)
+                {
+                    foreach (var user in multiselectContext.Users)
                     {
-                        return true;
+                        user.Selected = true;
+                        user.SelectedDate = DateTime.Now;
                     }
-                    else
+                    multiselectContext.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Couldn't connect to database", e);
+            }
+        }
+
+        public void DeselectAll(MultiselectContext multiselectContext)
+        {
+            try
+            {
+                using (multiselectContext)
+                {
+                    foreach (var user in multiselectContext.Users)
                     {
-                        return false;
+                        user.Selected = false;
                     }
+                    multiselectContext.SaveChanges();
                 }
             }
             catch (Exception e)
